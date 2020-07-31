@@ -1,5 +1,7 @@
 package hu.progmasters.hotelrest.domain;
 
+import hu.progmasters.hotelrest.domain.dto.HotelFormCommand;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,7 @@ public class Hotel {
     @Embedded
     private Address address;
 
-    @Column("name")
+    @Column(name = "name")
     private String name;
 
     @Enumerated(value = EnumType.STRING)
@@ -28,6 +30,16 @@ public class Hotel {
 
     @OneToMany(mappedBy = "hotel")
     private List<Room> roomList = new ArrayList<>();
+
+    public Hotel(HotelFormCommand hotelFormCommand) {
+        this.name = hotelFormCommand.getName();
+        this.description = hotelFormCommand.getDescription();
+        this.stars = hotelFormCommand.getHotelRating();
+        this.address = new Address(hotelFormCommand.getAddressFormCommand());
+    }
+
+    public Hotel() {
+    }
 
     public long getId() {
         return id;
